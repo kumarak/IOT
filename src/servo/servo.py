@@ -1,3 +1,6 @@
+
+# servo controller
+
 import RPi.GPIO as GPIO
 import time
 
@@ -13,17 +16,21 @@ def setServo(angle):
 	set("servo",str(angle))
 
 
-set("delayed","0")
-set("mode", "servo")
-set("servo_max", "180")
-set("active", "1")
 
-delay_period = 0.01
+def main():
+	global delay_period = 0.01
+	set("delayed","0")
+	set("mode", "servo")
+	set("servo_max", "180")
+	set("active", "1")
 
-while True:
-	for angle in range(0, 180):
-		setServo(angle)
-		time.sleep(delay_period)
-	for angle in range(0, 180):
-		setServo(180-angle)
-		time.sleep(delay_period)
+	while True:
+		for angle in range(0, 180):
+			setServo(angle)
+			time.sleep(delay_period)
+		for angle in range(0, 180):
+			setServo(180-angle)
+			time.sleep(delay_period)
+
+if __name__ == '__main__':
+	main()
