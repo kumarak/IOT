@@ -9,12 +9,15 @@ var express = require('express'),
     crypto = require('crypto'),
     async = require('async'),
     tank = {},
-    _leftMotorFront  = 11,
+    _leftMotorFront  = 18,
     _leftMotorBack   = 12,
     _rightMotorFront = 15,
     _rightMotorBack  = 16,
     app = module.exports = express.createServer(),
     io = sio.listen(app);
+
+var sys = require('sys'),
+    exec = require('child_process').exec;
 
 // Configuration
 app.configure(function() {
@@ -41,19 +44,13 @@ app.listen(3000);
 console.log('Listening %d in %s mode', app.address().port, app.settings.env);
 
 tank.initPins = function(){
-  async.parallel([
-    gpio.open(_leftMotorFront),
-    gpio.open(_leftMotorBack),
-    gpio.open(_rightMotorFront),
-    gpio.open(_rightMotorBack)
-  ]);
 };
 
+function puts(error, stdout, stderr) { sys.puts(stdout) };
+
 tank.moveForward = function(){
-  async.parallel([
-    gpio.write(_leftMotorFront, 1),
-    gpio.write(_rightMotorFront, 1)
-  ]);
+    exec("sudo /home/pi/LED/IOT/servo", puts);
+    console.log('setting servo pin\n');
 };
 
 tank.moveBackward = function(){
